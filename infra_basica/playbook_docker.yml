@@ -1,0 +1,30 @@
+---
+- name: "Set up server"
+  hosts: all
+  become: yes
+  user: ubuntu
+  gather_facts: no
+  vars:
+    #server_name: "{{ ansible_default_ipv4.address }}"
+    document_root: /var/www
+    #app_root: html_demo_site-main
+    ansible_user: "ubuntu"
+    ansible_ssh_private_key_file: 'chave_privada_gitlab'
+    ansible_ssh_common_args: '-o StrictHostKeyChecking=no'
+
+  tasks:
+    - name: "Update apt-get repository"
+      raw: apt-get update
+
+    - name: "Install Python 3"
+      raw: apt-get install -y python3
+
+    - name: "Install Docker"
+      shell: curl -sS https://get.docker.com | sh
+
+    - name: "Restart Docker"
+      systemd:
+        name: docker
+        enabled: yes
+        state: restarted
+        daemon_reload: yes
