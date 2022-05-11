@@ -5,10 +5,25 @@ pool:
   vmImage: ubuntu-latest
 
 steps:
-- script: echo Hello, world!
-  displayName: 'Run a one-line script'
+- task: TerraformInstaller@0
+  inputs:
+    terraformVersion: 'latest'
 
-- script: |
-    echo Add other tasks to build, test, and deploy your project.
-    echo See https://aka.ms/yaml
-  displayName: 'Run a multi-line script'
+- task: TerraformTaskV2@2
+  inputs:
+    provider: 'aws'
+    command: 'init'
+    backendServiceAWS: 'AWS_INFRA_BASICA'
+    backendAWSBucketName: 'tis-automation-bucket'
+    backendAWSKey: 'terraform.tfstate'
+
+- task: TerraformTaskV2@2
+  inputs:
+    provider: 'aws'
+    command: 'validate'
+
+- task: TerraformTaskV2@2
+  inputs:
+    provider: 'aws'
+    command: 'plan'
+    environmentServiceNameAWS: 'AWS_INFRA_BASICA'
