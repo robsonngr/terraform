@@ -1,0 +1,40 @@
+trigger:
+- none
+
+parameters:
+  - name: workingDirectory
+    type: string
+    default: "$(Build.SourcesDirectory)/infra_basica"
+
+pool:
+  vmImage: ubuntu-latest
+
+steps:
+- task: TerraformInstaller@0
+  inputs:
+    terraformVersion: 'latest'
+
+- task: TerraformTaskV2@2
+  displayName: INIT
+  inputs:
+    workingDirectory: '${{ parameters.workingDirectory }}'
+    provider: 'aws'
+    command: 'init'
+    backendServiceAWS: 'AWS_INFRA_BASICA'
+    backendAWSBucketName: 'tis-automation-bucket'
+    backendAWSKey: 'terraform.tfstate'
+
+- task: TerraformTaskV2@2
+  displayName: VALIDATE
+  inputs:
+    workingDirectory: '${{ parameters.workingDirectory }}'
+    provider: 'aws'
+    command: 'validate'
+
+- task: TerraformTaskV2@2
+  displayName: PLAN
+  inputs:
+    workingDirectory: '${{ parameters.workingDirectory }}'
+    provider: 'aws'
+    command: 'plan'
+    environmentServiceNameAWS: 'AWS_INFRA_BASICA'
