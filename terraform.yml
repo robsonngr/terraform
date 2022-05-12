@@ -43,10 +43,28 @@ steps:
     command: 'validate'
 
 - task: TerraformTaskV2@2
-  condition: ne('${{ parameters.Action }}', 'Destroy')
+  #condition: ne('${{ parameters.Action }}', 'Destroy')
   displayName: PLAN
   inputs:
     workingDirectory: '${{ parameters.workingDirectory }}'
     provider: 'aws'
     command: 'plan'
+    environmentServiceNameAWS: 'AWS_INFRA_BASICA'
+
+- task: TerraformTaskV2@2
+  condition: ne('${{ parameters.Action }}', 'Destroy')
+  displayName: APPLY
+  inputs:
+    provider: 'aws'
+    command: 'apply'
+    commandOptions: '-auto-approve'
+    environmentServiceNameAWS: 'AWS_INFRA_BASICA'
+
+- task: TerraformTaskV2@2
+  condition: eq('${{ parameters.Action }}', 'Destroy')
+  displayName: DESTROY
+  inputs:
+    provider: 'aws'
+    command: 'destroy'
+    commandOptions: '-auto-approve'
     environmentServiceNameAWS: 'AWS_INFRA_BASICA'
