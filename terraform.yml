@@ -55,6 +55,7 @@ steps:
   condition: ne('${{ parameters.Action }}', 'Destroy')
   displayName: APPLY
   inputs:
+    workingDirectory: '${{ parameters.workingDirectory }}'
     provider: 'aws'
     command: 'apply'
     commandOptions: '-auto-approve'
@@ -64,6 +65,7 @@ steps:
   condition: eq('${{ parameters.Action }}', 'Destroy')
   displayName: DESTROY
   inputs:
+    workingDirectory: '${{ parameters.workingDirectory }}'
     provider: 'aws'
     command: 'destroy'
     commandOptions: '-auto-approve'
