@@ -12,6 +12,7 @@ parameters:
     default: 'Apply'
     values:
     - Installer
+    - Init
     - Plan
     - Apply
     - Destroy
@@ -21,13 +22,14 @@ pool:
 
 jobs:
   - job: terraform_installer
-    condition: eq('${{ parameters.Action }}', 'Installer')
+    condition: eq('${{ parameters.Action }}', 'Installer') and ne('${{ parameters.Action }}', 'Destroy')
     steps:
     - task: TerraformInstaller@0
       inputs:
         terraformVersion: 'latest'
 
   - job: terraform_init
+    condition: eq('${{ parameters.Action }}', 'Init') and ne('${{ parameters.Action }}', 'Destroy')
     steps:
     - task: TerraformTaskV2@2
       displayName: INIT
@@ -40,6 +42,7 @@ jobs:
         backendAWSKey: 'terraform.tfstate'
   
   - job: terraform_validate
+    condition: eq('${{ parameters.Action }}', 'Validate') and ne('${{ parameters.Action }}', 'Destroy')
     steps:
     - task: TerraformTaskV2@2
       condition: ne('${{ parameters.Action }}', 'Destroy')
@@ -50,6 +53,7 @@ jobs:
         command: 'validate'
 
   - job: terraform_plan
+    condition: eq('${{ parameters.Action }}', 'Plan') and ne('${{ parameters.Action }}', 'Destroy')
     steps:
     - task: TerraformTaskV2@2
       condition: ne('${{ parameters.Action }}', 'Destroy')
