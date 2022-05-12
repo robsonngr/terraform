@@ -18,24 +18,27 @@ parameters:
 pool:
   vmImage: ubuntu-latest
 
-stages:
-  - stage: terraform_installer
+jobs:
+  - job: terraform_installer
+    steps:
     - task: TerraformInstaller@0
       inputs:
-   terraformVersion: 'latest'
+        terraformVersion: 'latest'
 
-  - stage: terraform_init
+  - job: terraform_init
+    steps:
     - task: TerraformTaskV2@2
       displayName: INIT
       inputs:
-        workingDirectory: '${{ parameters.workingDirectory }}'
         provider: 'aws'
         command: 'init'
+        workingDirectory: '${{ parameters.workingDirectory }}'
         backendServiceAWS: 'AWS_INFRA_BASICA'
         backendAWSBucketName: 'tis-automation-bucket'
         backendAWSKey: 'terraform.tfstate'
-
-  - stage: terraform_validate
+  
+  - job: terraform_validate
+    steps:
     - task: TerraformTaskV2@2
       condition: ne('${{ parameters.Action }}', 'Destroy')
       displayName: VALIDATE
@@ -44,7 +47,8 @@ stages:
         provider: 'aws'
         command: 'validate'
 
-  - stage: terraform_plan
+  - job: terraform_plan
+    steps:
     - task: TerraformTaskV2@2
       condition: ne('${{ parameters.Action }}', 'Destroy')
       displayName: PLAN
