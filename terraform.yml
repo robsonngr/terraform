@@ -11,6 +11,7 @@ parameters:
     type: string
     default: 'Apply'
     values:
+    - Installer
     - Plan
     - Apply
     - Destroy
@@ -20,6 +21,7 @@ pool:
 
 jobs:
   - job: terraform_installer
+    condition: eq('${{ parameters.Action }}', 'Installer')
     steps:
     - task: TerraformInstaller@0
       inputs:
