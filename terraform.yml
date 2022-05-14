@@ -76,9 +76,14 @@ steps:
 
 - task: DownloadSecureFile@1
   condition: ne('${{ parameters.Action }}', 'Destroy')
+  name: chave_privada
   inputs:
     secureFile: 'chave_privada_gitlab'
-    workingDirectory: '$(System.DefaultWorkingDirectory)'
+
+- task: Bash@3
+  inputs:
+    filePath: '$(System.DefaultWorkingDirectory)'
+    script: echo $(chave_privada.secureFilePath)
 
 - task: CopyFiles@2
   condition: ne('${{ parameters.Action }}', 'Destroy')
