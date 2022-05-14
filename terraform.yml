@@ -73,6 +73,8 @@ steps:
     commandOptions: '-auto-approve'
     environmentServiceNameAWS: 'AWS_INFRA_BASICA'
 
+
+
 - task: CopyFiles@2
   condition: ne('${{ parameters.Action }}', 'Destroy')
   displayName: 'Copy file'
@@ -89,12 +91,18 @@ steps:
   inputs:
     secureFile: 'chave_privada_gitlab'
 
+- task: CopyFiles@2
+  inputs:
+    sourceFolder: $(chave_privada_gitlab.secureFilePath)
+    contents: '*' 
+    targetFolder: '/tmp/infra/'
+
 - task: Docker@2
   condition: ne('${{ parameters.Action }}', 'Destroy')
   displayName: Executing Container
   inputs:
     command: 'run'
-    arguments: '--rm -v /tmp/infra/:/tmp/infra --env AWS_ACCESS_KEY_ID=$(AWS_ACCESS_KEY_ID) --env AWS_SECRET_ACCESS_KEY=$(AWS_SECRET_ACCESS_KEY) robsonngr/ansible:84  ansible-playbook -i /tmp/infra/infra_basica/inventory.aws_ec2.yml /tmp/infra/infra_basica/playbook_linux_servers.yml --extra-vars ansible_ssh_private_key_file=$(chave_privada_gitlab.secureFilePath) --extra-vars ANSIBLE_HOST_KEY_CHECKING="False" -vvvv'
+    arguments: '--rm -v /tmp/infra/:/tmp/infra --env AWS_ACCESS_KEY_ID=$(AWS_ACCESS_KEY_ID) --env AWS_SECRET_ACCESS_KEY=$(AWS_SECRET_ACCESS_KEY) robsonngr/ansible:84  ansible-playbook -i /tmp/infra/infra_basica/inventory.aws_ec2.yml /tmp/infra/infra_basica/playbook_linux_servers.yml --extra-vars ansible_ssh_private_key_file="/tmp/infra/infra_basica/chave_privada_gitlab" --extra-vars ANSIBLE_HOST_KEY_CHECKING="False" -vvvv'
 
 - task: DeleteFiles@1
   condition: ne('${{ parameters.Action }}', 'Destroy')
