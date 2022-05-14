@@ -74,6 +74,11 @@ steps:
     environmentServiceNameAWS: 'AWS_INFRA_BASICA'
 
 
+- task: DownloadSecureFile@1
+  condition: ne('${{ parameters.Action }}', 'Destroy')
+  inputs:
+    secureFile: 'chave_privada_gitlab'
+    workingDirectory: '$(System.DefaultWorkingDirectory)'
 
 - task: CopyFiles@2
   condition: ne('${{ parameters.Action }}', 'Destroy')
@@ -85,12 +90,6 @@ steps:
       **/playbook_linux_servers.yml
       **/inventory.aws_ec2.yml
     TargetFolder: '/tmp/infra/'
-
-- task: DownloadSecureFile@1
-  condition: ne('${{ parameters.Action }}', 'Destroy')
-  inputs:
-    secureFile: 'chave_privada_gitlab'
-
 
 - task: CopyFiles@2
   inputs:
