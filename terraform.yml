@@ -101,7 +101,7 @@ steps:
   displayName: Executing Container
   inputs:
     command: 'run'
-    arguments: '--rm -v /tmp/infra/:/tmp/infra --env AWS_ACCESS_KEY_ID=$(AWS_ACCESS_KEY_ID) --env AWS_SECRET_ACCESS_KEY=$(AWS_SECRET_ACCESS_KEY) robsonngr/ansible:84  ansible-playbook -i /tmp/infra/infra_basica/inventory.aws_ec2.yml /tmp/infra/infra_basica/playbook_linux_servers.yml --extra-vars -e ansible_ssh_private_key_file=$(chave_privada.secureFilePath) -vvvvv'
+    arguments: '--rm -v /tmp/infra/:/tmp/infra --env AWS_ACCESS_KEY_ID=$(AWS_ACCESS_KEY_ID) --env AWS_SECRET_ACCESS_KEY=$(AWS_SECRET_ACCESS_KEY) robsonngr/ansible:84  ansible-playbook -i /tmp/infra/infra_basica/inventory.aws_ec2.yml /tmp/infra/infra_basica/playbook_linux_servers.yml -e ansible_ssh_private_key_file=$(chave_privada.secureFilePath) -vvvvv'
 
 - task: DeleteFiles@1
   condition: ne('${{ parameters.Action }}', 'Destroy')
