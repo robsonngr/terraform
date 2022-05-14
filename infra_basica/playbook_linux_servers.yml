@@ -1,6 +1,8 @@
 ---
 - hosts: Linux
   become: yes
+  gather_facts: false
+
   vars:
     #server_name: "{{ ansible_default_ipv4.address }}"
     document_root: /var/www
