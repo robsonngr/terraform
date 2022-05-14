@@ -91,12 +91,6 @@ steps:
       **/inventory.aws_ec2.yml
     TargetFolder: '/tmp/infra/'
 
-- task: CopyFiles@2
-  inputs:
-    sourceFolder: $(chave_privada_gitlab.secureFilePath)
-    contents: chave_privada_gitlab 
-    targetFolder: '/tmp/infra/'
-
 - task: Docker@2
   condition: ne('${{ parameters.Action }}', 'Destroy')
   displayName: Executing Container
