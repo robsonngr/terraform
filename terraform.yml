@@ -91,6 +91,7 @@ steps:
     Contents: |
       **/playbook_linux_servers.yml
       **/inventory.aws_ec2.yml
+      **/ansible.cfg
     TargetFolder: '/tmp/infra/'
 
 - script: ls -ltra /tmp/infra/
