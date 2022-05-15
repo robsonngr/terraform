@@ -104,7 +104,7 @@ steps:
       export ANSIBLE_HOST_KEY_CHECKING="False"
       export SSH_KEY=$(cat /home/vsts/work/_temp/chave_privada_gitlab)
       eval $(ssh-agent -s)
-      echo "$SSH_PRIVATE_KEY" | tr -d '\r' | ssh-add -
+      echo "$SSH_KEY" | tr -d '\r' | ssh-add -
       sudo mkdir -p ~/.ssh
       sudo chmod 700  ~/.ssh
       echo $(chave_privada.secureFilePath)
