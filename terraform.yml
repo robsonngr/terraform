@@ -102,16 +102,16 @@ steps:
       export AWS_ACCESS_KEY_ID=$(AWS_ACCESS_KEY_ID) 
       export AWS_SECRET_ACCESS_KEY=$(AWS_SECRET_ACCESS_KEY)
       export ANSIBLE_HOST_KEY_CHECKING="False"
-      export SSH_KEY=$(cat chave_privada.secureFilePath)
+      export SSH_KEY=$(chave_privada.secureFilePath)
       eval $(ssh-agent -s)
       echo "$SSH_PRIVATE_KEY" | tr -d '\r' | ssh-add -
-      mkdir -p ~/.ssh
-      chmod 700  ~/.ssh
+      sudo mkdir -p ~/.ssh
+      sudo chmod 700  ~/.ssh
       echo $(chave_privada.secureFilePath)
-      chmod 777 /home/vsts/work/_temp/chave_privada_gitlab
-      cd /tmp/infra
-      apt-get update
-      apt-get install python3 -y
+      sudo chmod 777 /home/vsts/work/_temp/chave_privada_gitlab
+      sudo cd /tmp/infra
+      sudo apt-get update -y
+      sudo apt-get install python3 -y
       python3 -m venv .venv && source .venv/bin/activate
       python3 -m pip install ansible boto3 pywinrm
       ansible --version
