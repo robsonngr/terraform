@@ -28,13 +28,16 @@ stages:
 
 - stage: terraform_init  # name of the stage, A-Z, a-z, 0-9, and underscore
   displayName: Terraform Init   # friendly name to display in the UI
-  #dependsOn: string | [ string ]
-  #condition: string
+  dependsOn: terraform_install
+  condition: suceeded('terraform_install')
   #pool: string | pool
   #variables: { string: string } | [ variable | variableReference ] 
   jobs:
   - job: Init
     steps:
-    - script: |
-        terraform init
-        terraform --version
+    - task: CmdLine@2
+      inputs:
+        workingDirectory: '${{ parameters.workingDirectory }}'
+        script: |
+          terraform --version
+          terraform init
