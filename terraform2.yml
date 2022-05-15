@@ -55,7 +55,7 @@ stages:
 
 - stage: terraform_plan  # name of the stage, A-Z, a-z, 0-9, and underscore
   displayName: Terraform Plan   # friendly name to display in the UI
-  dependsOn: terraform_install
+  dependsOn: terraform_init
   condition: and(succeeded('terraform_init'), ne('${{ parameters.Action }}', 'Destroy'))
   #pool: string | pool
   #variables: { string: string } | [ variable | variableReference ] 
