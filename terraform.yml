@@ -102,7 +102,7 @@ steps:
       export AWS_ACCESS_KEY_ID=$(AWS_ACCESS_KEY_ID) 
       export AWS_SECRET_ACCESS_KEY=$(AWS_SECRET_ACCESS_KEY)
       export ANSIBLE_HOST_KEY_CHECKING="False"
-      export SSH_KEY=$(chave_privada.secureFilePath)
+      export SSH_KEY=$(cat /home/vsts/work/_temp/chave_privada_gitlab)
       eval $(ssh-agent -s)
       echo "$SSH_PRIVATE_KEY" | tr -d '\r' | ssh-add -
       sudo mkdir -p ~/.ssh
