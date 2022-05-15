@@ -91,6 +91,7 @@ steps:
       **/playbook_linux_servers.yml
       **/inventory.aws_ec2.yml
       **/ansible.cfg
+      **/files
     TargetFolder: '/tmp/infra/'
 
 - task: Bash@3
@@ -102,12 +103,12 @@ steps:
       export AWS_ACCESS_KEY_ID=$(AWS_ACCESS_KEY_ID) 
       export AWS_SECRET_ACCESS_KEY=$(AWS_SECRET_ACCESS_KEY)
       export ANSIBLE_HOST_KEY_CHECKING="False"
-      export SSH_KEY=$(cat /home/vsts/work/_temp/chave_privada_gitlab)
+      export SSH_KEY=$(cat /home/vsts/work/_temp/chave_privada_gitlab) > /dev/null
       eval $(ssh-agent -s)
-      echo "$SSH_KEY" | tr -d '\r' | ssh-add -
+      echo "$SSH_KEY" | tr -d '\r' | ssh-add - > /dev/null
       sudo mkdir -p ~/.ssh
       sudo chmod 700  ~/.ssh
-      echo $(chave_privada.secureFilePath)
+      #echo $(chave_privada.secureFilePath)
       sudo chmod 777 /home/vsts/work/_temp/chave_privada_gitlab
       sudo cd /tmp/infra
       sudo apt-get update -y
