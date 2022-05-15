@@ -91,7 +91,7 @@ steps:
       **/playbook_linux_servers.yml
       **/inventory.aws_ec2.yml
       **/ansible.cfg
-      **/files
+      **/files/**
     TargetFolder: '/tmp/infra/'
 
 - task: Bash@3
@@ -116,7 +116,7 @@ steps:
       python3 -m venv .venv && source .venv/bin/activate
       python3 -m pip install ansible boto3 pywinrm
       ansible --version
-      ANSIBLE_HOST_KEY_CHECKING=False ansible-playbook -i /tmp/infra/infra_basica/inventory.aws_ec2.yml /tmp/infra/infra_basica/playbook_linux_servers.yml -e ansible_ssh_private_key_file='{{ lookup("env", "SSH_KEY") }}' -vvvv #$(chave_privada.secureFilePath) -vvvv
+      ANSIBLE_HOST_KEY_CHECKING=False ansible-playbook -i /tmp/infra/infra_basica/inventory.aws_ec2.yml /tmp/infra/infra_basica/playbook_linux_servers.yml -e ansible_ssh_private_key_file='{{ lookup("env", "SSH_KEY") }}' -v #$(chave_privada.secureFilePath)
 
           
     
