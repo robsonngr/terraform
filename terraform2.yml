@@ -88,5 +88,24 @@ stages:
           export AWS_ACCESS_KEY_ID=$(AWS_ACCESS_KEY_ID)
           export AWS_SECRET_ACCESS_KEY=$(AWS_SECRET_ACCESS_KEY)
           terraform --version
+          terraform init
           terraform apply -auto-approve
-#          terraform apply
+
+- stage: terraform_destroy  # name of the stage, A-Z, a-z, 0-9, and underscore
+  displayName: Terraform Destroy   # friendly name to display in the UI
+  #dependsOn: terraform_plan
+  condition: eq('${{ parameters.Action }}', 'Destroy')
+  #pool: string | pool
+  #variables: { string: string } | [ variable | variableReference ] 
+  jobs:
+  - job: Destroy
+    steps:
+    - task: CmdLine@2
+      inputs:
+        workingDirectory: '${{ parameters.workingDirectory }}'
+        script: |
+          export AWS_ACCESS_KEY_ID=$(AWS_ACCESS_KEY_ID)
+          export AWS_SECRET_ACCESS_KEY=$(AWS_SECRET_ACCESS_KEY)
+          terraform --version
+          terraform init
+          terraform destroy -auto-approve
