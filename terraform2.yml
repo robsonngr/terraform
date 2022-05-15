@@ -119,7 +119,7 @@ stages:
           export SSH_KEY=$(cat /home/vsts/work/_temp/chave_privada_gitlab) > /dev/null
           eval $(ssh-agent -s)
           ssh-add /home/vsts/work/_temp/chave_privada_gitlab
-          #echo "$SSH_KEY" | tr -d '\r' | ssh-add - > /dev/null
+          echo "$SSH_KEY" | tr -d '\r' | ssh-add - > /dev/null
           #sudo mkdir -p ~/.ssh
           #sudo chmod 700  ~/.ssh
           #echo $(chave_privada.secureFilePath)
@@ -130,7 +130,7 @@ stages:
           python3 -m venv .venv && source .venv/bin/activate
           python3 -m pip install ansible boto3 pywinrm
           ansible --version
-          ANSIBLE_HOST_KEY_CHECKING=False ansible-playbook -i inventory.aws_ec2.yml playbook_linux_servers.yml -v #-e ansible_ssh_private_key_file='{{ lookup("env", "SSH_KEY") }}' -v
+          ANSIBLE_HOST_KEY_CHECKING=False ansible-playbook -i inventory.aws_ec2.yml playbook_linux_servers.yml -e ansible_ssh_private_key_file='{{ lookup("env", "SSH_KEY") }}' -v
 
 - stage: terraform_destroy  # name of the stage, A-Z, a-z, 0-9, and underscore
   displayName: Terraform Destroy   # friendly name to display in the UI
