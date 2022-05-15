@@ -94,11 +94,14 @@ steps:
     TargetFolder: '/tmp/infra/'
 
 - script: | 
+  displayName: Ansible
   condition: ne('${{ parameters.Action }}', 'Destroy')
     export AWS_ACCESS_KEY_ID=$(AWS_ACCESS_KEY_ID) 
     export AWS_SECRET_ACCESS_KEY=$(AWS_SECRET_ACCESS_KEY)
     echo $(chave_privada.secureFilePath)
     cd /tmp/infra
+    apt-get update
+    apt-get install python3 -y
     python3 -m venv .venv && source .venv/bin/activate
     python3 -m pip install ansible boto3 pywinrm
     ansible --version
