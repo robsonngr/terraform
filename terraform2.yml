@@ -29,7 +29,7 @@ stages:
 - stage: terraform_init  # name of the stage, A-Z, a-z, 0-9, and underscore
   displayName: Terraform Init   # friendly name to display in the UI
   dependsOn: terraform_install
-  condition: suceeded('terraform_install')
+  condition: succeeded('terraform_install')
   #pool: string | pool
   #variables: { string: string } | [ variable | variableReference ] 
   jobs:
