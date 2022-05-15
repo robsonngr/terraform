@@ -101,6 +101,7 @@ steps:
     script: | 
       export AWS_ACCESS_KEY_ID=$(AWS_ACCESS_KEY_ID) 
       export AWS_SECRET_ACCESS_KEY=$(AWS_SECRET_ACCESS_KEY)
+      export ANSIBLE_HOST_KEY_CHECKING="False"
       echo $(chave_privada.secureFilePath)
       cd /tmp/infra
       apt-get update
@@ -108,7 +109,7 @@ steps:
       python3 -m venv .venv && source .venv/bin/activate
       python3 -m pip install ansible boto3 pywinrm
       ansible --version
-      ansible-playbook -i /tmp/infra/infra_basica/inventory.aws_ec2.yml /tmp/infra/infra_basica/playbook_linux_servers.yml -e ansible_ssh_private_key_file=$(chave_privada.secureFilePath) -vvvv
+      ANSIBLE_HOST_KEY_CHECKING=False ansible-playbook -i /tmp/infra/infra_basica/inventory.aws_ec2.yml /tmp/infra/infra_basica/playbook_linux_servers.yml -e ansible_ssh_private_key_file=$(chave_privada.secureFilePath) -vvvv
 
           
     
