@@ -1,6 +1,11 @@
 trigger:
 - none
 
+parameters:
+  - name: workingDirectory
+    type: string
+    default: "$(Build.SourcesDirectory)/infra_basica"
+
 pool:
   vmImage: ubuntu-latest
 
@@ -19,4 +24,17 @@ stages:
         curl -fsSL https://apt.releases.hashicorp.com/gpg | sudo apt-key add -
         sudo apt-add-repository "deb [arch=amd64] https://apt.releases.hashicorp.com $(lsb_release -cs) main"
         sudo apt-get update && sudo apt-get install terraform
+        terraform --version
+
+- stage: terraform_init  # name of the stage, A-Z, a-z, 0-9, and underscore
+  displayName: Terraform Init   # friendly name to display in the UI
+  #dependsOn: string | [ string ]
+  #condition: string
+  #pool: string | pool
+  #variables: { string: string } | [ variable | variableReference ] 
+  jobs:
+  - job: Init
+    steps:
+    - script: |
+        terraform init
         terraform --version
