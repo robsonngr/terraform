@@ -6,7 +6,7 @@ parameters:
     type: string
     default: "$(Build.SourcesDirectory)/infra_basica"
 
-- name: Action
+  - name: Action
     displayName: Action
     type: string
     default: 'Apply'
